@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+
+# Args collect sys arg: (files or directories)
+# Args collect commands 
+
+import os
+import sys
+
+
+args  = sys.argv[1:]
+files = [x for x in args if os.path.isfile(x)]
+dirs  = [x for x in args if os.path.isdir(x)]
+
+print("files: %s" % files)
+print("dirs:  %s" % dirs)
