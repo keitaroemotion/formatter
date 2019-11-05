@@ -45,7 +45,6 @@ def format_file(file):
         print(content)
 
 def format_directory(path):
-    print(path)
     if os.path.isfile(path):
         format_file(path)
     else:
