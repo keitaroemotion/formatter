@@ -5,6 +5,7 @@
 
 import glob 
 import os
+import re
 import sys
 
 langs   = [
@@ -41,8 +42,21 @@ def format_file(file):
     if(is_dry_run == True):
         print(file)
     else:
-        content = read(file)
+        content = read(file).split('\n')
         print(content)
+        #
+        # according to the desirable pattern,
+        # fix the code base
+        #
+        new_content = []
+        for line in content:
+            if(
+                re.search(
+                     "(\s{4})+",
+                     line
+                ) != None
+            ):
+                print("* " + line)
 
 def format_directory(path):
     if os.path.isfile(path):
