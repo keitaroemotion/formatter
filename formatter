@@ -3,27 +3,54 @@
 # Args collect sys arg: (files or directories)
 # Args collect commands 
 
+import glob 
 import os
 import sys
 
 langs   = [
               "grails"
           ]
-args    = sys.argv[1:]
-files   = [x for x in args if os.path.isfile(x)]
-dirs    = [x for x in args if os.path.isdir (x)]
-options = list(filter(
-              lambda x: x in langs,
-              args
-          ))
 
-if len(options) > 1:
+args    = sys.argv[1:]
+options = [x for x in args if x.startswith("-")]
+files   = [x for x in args if os.path.exists(x)]
+lang    = list(filter(
+                 lambda x: x in langs,
+                 args
+             ))
+is_dry_run = "--dry-run" in options
+
+if len(lang) > 1:
     print("\nMultiple languages selected. Please select one.\n")
     sys.exit()
 
-if len(options) == 0:
+if len(lang) == 0:
     print("\nNo languages selected. Please select one.\n")
     sys.exit()
 
-print("files: %s" % files)
-print("dirs:  %s" % dirs)
+def read(path):
+    try:
+        f = open(path)
+        content = f.read()
+        f.close()
+        return content
+    except:
+        return ''
+
+def format_file(file):
+    if(is_dry_run == True):
+        print(file)
+    else:
+        content = read(file)
+        print(content)
+
+def format_directory(path):
+    print(path)
+    if os.path.isfile(path):
+        format_file(path)
+    else:
+        for _path in glob.glob(path + "/*"):
+            format_directory(_path)
+
+for file in files:
+    format_directory(file)
