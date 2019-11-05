@@ -6,10 +6,24 @@
 import os
 import sys
 
+langs   = [
+              "grails"
+          ]
+args    = sys.argv[1:]
+files   = [x for x in args if os.path.isfile(x)]
+dirs    = [x for x in args if os.path.isdir (x)]
+options = list(filter(
+              lambda x: x in langs,
+              args
+          ))
 
-args  = sys.argv[1:]
-files = [x for x in args if os.path.isfile(x)]
-dirs  = [x for x in args if os.path.isdir(x)]
+if len(options) > 1:
+    print("\nMultiple languages selected. Please select one.\n")
+    sys.exit()
+
+if len(options) == 0:
+    print("\nNo languages selected. Please select one.\n")
+    sys.exit()
 
 print("files: %s" % files)
 print("dirs:  %s" % dirs)
