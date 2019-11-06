@@ -51,7 +51,9 @@ def format_file(file):
         # according to the desirable pattern,
         # fix the code base
         #
-        new_content = []
+        new_content             = []
+        previous_equal_location = 0
+
         for line in content:
             if(
                 (len(line) < 200) and
@@ -60,7 +62,24 @@ def format_file(file):
                      line
                 ) != None)
             ):
-                print("* " + line)
+                re_equal      = r'[^=]+=[^=]'
+                re_prefix     = r'\[[a-z]+\:\s*'
+                re_hit_prefix = re.search(re_prefix, line)
+
+                if(re.search(re_equal, line)):
+                    previous_equal_location = line.index('=')
+
+                if(re_hit_prefix):
+                    line   = re.sub(
+                               re_prefix,
+                               "\n%s%s" % (
+                                   ' ' * previous_equal_location,
+                                   re_hit_prefix.group(0)
+                               ),
+                               line
+                           )
+                    # print("* " + line)
+                    print(line)
 
 def format_directory(path):
     if os.path.isfile(path):
