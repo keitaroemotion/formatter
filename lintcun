@@ -38,6 +38,9 @@ def read(path):
     except:
         return ''
 
+def not_javascript_contraption(line):
+    len(line)
+
 def format_file(file):
     if(is_dry_run == True):
         print(file)
@@ -51,10 +54,11 @@ def format_file(file):
         new_content = []
         for line in content:
             if(
-                re.search(
-                     "(\s{4})+static\s+[a-zA-Z]+\s+",
+                (len(line) < 200) and
+                (re.search(
+                     "(\s{4})+static\s+[a-zA-Z]+\s+=",
                      line
-                ) != None
+                ) != None)
             ):
                 print("* " + line)
 
